@@ -5,31 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lemargo App</title>
 
+  <!-- Manifest y PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#007BFF" />
+  <link rel="icon" href="icon.png" />
+
   <!-- OneSignal SDK -->
-  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" async></script>
   <script>
-    window.OneSignal = window.OneSignal || [];
-    OneSignal.push(function() {
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(function(OneSignal) {
       OneSignal.init({
-        appId: "TU_APP_ID", // Reemplaza con tu App ID real
-        safari_web_id: "", // Solo si usas Safari (puedes dejarlo vacío si no aplica)
+        appId: "28eb0f87-eda8-4fad-9fbd-0a60a0c6d091", // ✅ Reemplaza esto con tu verdadero App ID de OneSignal
         notifyButton: {
           enable: true,
         },
+        serviceWorkerPath: "/OneSignalSDKWorker.js",
+        serviceWorkerUpdaterPath: "/OneSignalSDKUpdaterWorker.js",
+        allowLocalhostAsSecureOrigin: true
       });
+
+      // Mostrar el banner automáticamente
+      OneSignal.showSlidedownPrompt();
     });
   </script>
-
-  <!-- Iconos y PWA -->
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="icon.png" />
-  <meta name="theme-color" content="#007BFF" />
 </head>
 <body>
   <h1>Bienvenido a Lemargo App</h1>
   <p>Prueba de notificaciones push con OneSignal.</p>
 
   <!-- Botón manual de suscripción (opcional) -->
-  <button onclick="OneSignal.showSlidedownPrompt()">Activar notificaciones</button>
+  <button onclick="OneSignalDeferred.push(function(OneSignal){ OneSignal.showSlidedownPrompt(); });">
+    Activar notificaciones
+  </button>
 </body>
 </html>
