@@ -3,21 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lemargo App</title>
+  <title>Lemargo | Consulta en Tiempo Real</title>
 
   <!-- OneSignal SDK -->
   <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
   <script>
     window.OneSignal = window.OneSignal || [];
-    OneSignal.push(function() {
+    OneSignal.push(function () {
       OneSignal.init({
-        appId: "28eb0f87-eda8-4fad-9fbd-0a60a0c6d091", // Tu App ID real
-        safari_web_id: "", // Solo si usas Safari
+        appId: "28eb0f87-eda8-4fad-9fbd-0a60a0c6d091",
         notifyButton: {
           enable: true,
         },
       });
+
+      OneSignal.isPushNotificationsEnabled(function (isEnabled) {
+        const estado = document.getElementById("estado-notificacion");
+        estado.textContent = isEnabled
+          ? "✅ Notificaciones activadas"
+          : "❌ Notificaciones desactivadas";
+      });
     });
+
+    function activarNotificaciones() {
+      OneSignal.showSlidedownPrompt();
+    }
   </script>
 
   <!-- PWA -->
@@ -25,62 +35,97 @@
   <link rel="icon" href="icon.png" />
   <meta name="theme-color" content="#007BFF" />
 
-  <!-- Estilo del botón -->
+  <!-- Estilos -->
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f6fc;
+    :root {
+      --color-bg: #f9fbfc;
+      --color-text: #222;
+      --color-primary: #007BFF;
+      --color-secondary: #0056b3;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg: #121212;
+        --color-text: #e4e4e4;
+        --color-primary: #3399FF;
+        --color-secondary: #66b2ff;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-text);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
+      padding: 20px;
       text-align: center;
     }
 
     h1 {
-      color: #1f2937;
-      margin-bottom: 0.5em;
+      color: var(--color-primary);
+      margin-bottom: 15px;
     }
 
     p {
-      color: #4b5563;
-      margin-bottom: 2em;
+      font-size: 1.1em;
+      max-width: 600px;
+      margin-bottom: 30px;
     }
 
-    #subscribe-btn {
-      background: linear-gradient(135deg, #4f46e5, #6366f1);
-      color: #fff;
-      border: none;
+    .btn {
+      background-color: var(--color-primary);
+      color: white;
       padding: 14px 28px;
-      border-radius: 12px;
-      font-size: 1rem;
-      font-weight: 600;
+      margin: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
       cursor: pointer;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
       transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.25);
     }
 
-    #subscribe-btn:hover {
+    .btn:hover {
+      background-color: var(--color-secondary);
       transform: scale(1.05);
-      background: linear-gradient(135deg, #4338ca, #4f46e5);
+      box-shadow: 0 6px 16px rgba(0, 123, 255, 0.35);
+    }
+
+    .estado {
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 25px;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #888;
     }
   </style>
 </head>
 <body>
-  <h1>Bienvenido a Lemargo App</h1>
-  <p>Recibe notificaciones importantes directamente en tu dispositivo.</p>
+  <h1>Bienvenido a Lemargo</h1>
+  <p>Consulta actualizada en tiempo real y notificaciones automáticas al instante.</p>
 
-  <button id="subscribe-btn">
-    🔔 Activar notificaciones
-  </button>
+  <button class="btn" onclick="activarNotificaciones()">🔔 Activar notificaciones</button>
+  <a class="btn" href="https://lemargo.streamlit.app" target="_blank">🚀 Ir a la App</a>
 
-  <script>
-    document.getElementById("subscribe-btn").addEventListener("click", function () {
-      OneSignal.showSlidedownPrompt();
-    });
-  </script>
+  <div class="estado" id="estado-notificacion">Cargando estado...</div>
+
+  <footer>
+    Lemargo &copy; 2025 — Estatus inteligente en la nube.
+  </footer>
 </body>
 </html>
