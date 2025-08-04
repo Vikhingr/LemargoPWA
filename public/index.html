@@ -5,38 +5,82 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lemargo App</title>
 
-  <!-- Manifest y PWA -->
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#007BFF" />
-  <link rel="icon" href="icon.png" />
-
   <!-- OneSignal SDK -->
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" async></script>
+  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
   <script>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(function(OneSignal) {
+    window.OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
       OneSignal.init({
-        appId: "28eb0f87-eda8-4fad-9fbd-0a60a0c6d091", // ✅ Reemplaza esto con tu verdadero App ID de OneSignal
+        appId: "28eb0f87-eda8-4fad-9fbd-0a60a0c6d091", // Tu App ID real
+        safari_web_id: "", // Solo si usas Safari
         notifyButton: {
           enable: true,
         },
-        serviceWorkerPath: "/OneSignalSDKWorker.js",
-        serviceWorkerUpdaterPath: "/OneSignalSDKUpdaterWorker.js",
-        allowLocalhostAsSecureOrigin: true
       });
-
-      // Mostrar el banner automáticamente
-      OneSignal.showSlidedownPrompt();
     });
   </script>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon.png" />
+  <meta name="theme-color" content="#007BFF" />
+
+  <!-- Estilo del botón -->
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6fc;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      color: #1f2937;
+      margin-bottom: 0.5em;
+    }
+
+    p {
+      color: #4b5563;
+      margin-bottom: 2em;
+    }
+
+    #subscribe-btn {
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      transition: all 0.3s ease;
+    }
+
+    #subscribe-btn:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #4338ca, #4f46e5);
+    }
+  </style>
 </head>
 <body>
   <h1>Bienvenido a Lemargo App</h1>
-  <p>Prueba de notificaciones push con OneSignal.</p>
+  <p>Recibe notificaciones importantes directamente en tu dispositivo.</p>
 
-  <!-- Botón manual de suscripción (opcional) -->
-  <button onclick="OneSignalDeferred.push(function(OneSignal){ OneSignal.showSlidedownPrompt(); });">
-    Activar notificaciones
+  <button id="subscribe-btn">
+    🔔 Activar notificaciones
   </button>
+
+  <script>
+    document.getElementById("subscribe-btn").addEventListener("click", function () {
+      OneSignal.showSlidedownPrompt();
+    });
+  </script>
 </body>
 </html>
